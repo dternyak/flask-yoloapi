@@ -7,7 +7,7 @@ import dateutil.parser
 from flask import jsonify, Response
 from werkzeug.exceptions import HTTPException
 from werkzeug.wrappers import Response as WResponse
-
+from animal_case import to_snake_case, animalify
 from flask_yoloapi import utils
 from flask_yoloapi.types import ANY
 
@@ -64,8 +64,8 @@ def api(view_func, *parameters):
 
         for param in parameters:
             # normalize param key for the view_func(*args, **kwargs) call
-            param_key_safe = param.key.replace('-', '_')
-            
+            param_key_safe = to_snake_case(param.key.replace('-', '_'))
+
             # checks if param is required
             if param.key not in request_data[param.location]:
                 if param.required:
@@ -119,7 +119,7 @@ def api(view_func, *parameters):
                     if isinstance(result, Response):
                         return result
                     elif result:
-                        raise Exception("validator returned an unknown format. " 
+                        raise Exception("validator returned an unknown format. "
                                         "either return nothing, raise an Exception or "
                                         "return a `flask.Response` object.")
                 except Exception as ex:
@@ -141,12 +141,13 @@ def api(view_func, *parameters):
         elif isinstance(result, tuple):
             if not len(result) == 2 or not isinstance(result[1], int):
                 return func_err(messages["bad_return_tuple"])
-            return jsonify(data=result[0]), result[1]
+            return jsonify(animalify(result[0], 'camel')), result[1]
 
         elif not isinstance(result, SUPPORTED_TYPES):
             raise TypeError("Bad return type for api_result")
 
-        return jsonify(data=result)
+        return jsonify(animalify(result))
+
     return validate_and_execute
 
 
