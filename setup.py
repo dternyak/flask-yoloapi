@@ -26,7 +26,7 @@ setup(
     author_email='sa.ferdinand@gmail.com',
     url='https://github.com/skftn/flask-yoloapi',
     install_requires=[
-        'animal-case'
+        'animal-case',
         'flask',
         'python-dateutil'
     ],
