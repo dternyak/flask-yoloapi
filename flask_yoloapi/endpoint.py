@@ -109,6 +109,8 @@ def api(view_func, *parameters):
                         value = False
                     else:
                         return func_err(messages["type_error"] % (param.key, param.type))
+                elif value is None:
+                    pass
                 else:
                     return func_err(messages["type_error"] % (param.key, param.type))
 

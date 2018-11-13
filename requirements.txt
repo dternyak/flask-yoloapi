@@ -1,4 +1,4 @@
-animal-case==0.3.1
+animal-case==0.4.0
 atomicwrites==1.2.1
 attrs==18.2.0
 Click==7.0
