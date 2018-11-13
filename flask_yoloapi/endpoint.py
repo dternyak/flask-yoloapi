@@ -69,7 +69,7 @@ def api(view_func, *parameters):
             # checks if param is required
             if param.key not in request_data[param.location]:
                 if param.required:
-                    return func_err(messages["required"] % param.key)
+                    return func_err(messages["required"] % param.key, http_status=400)
                 else:
                     # set default value, if provided
                     if param.default is not None:
@@ -109,8 +109,6 @@ def api(view_func, *parameters):
                         value = False
                     else:
                         return func_err(messages["type_error"] % (param.key, param.type))
-                elif value is None:
-                    pass
                 else:
                     return func_err(messages["type_error"] % (param.key, param.type))
 
